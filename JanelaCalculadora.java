@@ -1,17 +1,16 @@
-// Arquivo: JanelaCalculadora.java (com ícone personalizado)
+// Arquivo: JanelaCalculadora.java (Versão Final Corrigida)
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.net.URL; // Import necessário para carregar o ícone
+import java.net.URL;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
 public class JanelaCalculadora extends JFrame {
-    
-    // ... (declaração de componentes permanece a mesma) ...
+
     private JTextField campoValorBruto;
     private JComboBox<String> seletorTipoOrgao;
     private JButton botaoLimpar;
@@ -24,25 +23,20 @@ public class JanelaCalculadora extends JFrame {
     private final CalculadoraImpostos calculadora;
 
     public JanelaCalculadora() {
-        // --- Configurações da Janela ---
         setTitle("Calculadora de Impostos");
         setSize(480, 520);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        
-        // --- NOVO: CÓDIGO PARA ADICIONAR O ÍCONE ---
-        // Usar getResource garante que o ícone seja encontrado mesmo dentro de um .jar
+
         URL urlIcone = getClass().getResource("icone.png");
         if (urlIcone != null) {
             setIconImage(new ImageIcon(urlIcone).getImage());
         } else {
             System.err.println("Erro: Não foi possível encontrar o arquivo do ícone: icone.png");
         }
-        // --- FIM DO BLOCO DO ÍCONE ---
 
         this.calculadora = new CalculadoraImpostos();
-        
-        // ... (o resto do código do construtor e dos outros métodos permanece o mesmo) ...
+
         JPanel painelPrincipal = new JPanel(new GridBagLayout());
         painelPrincipal.setBorder(new EmptyBorder(20, 20, 20, 20));
         GridBagConstraints gbc = new GridBagConstraints();
@@ -56,7 +50,7 @@ public class JanelaCalculadora extends JFrame {
         Font fonteResultadoValor = new Font("Arial", Font.BOLD, 18);
         Font fonteResultadoFinal = new Font("Arial", Font.BOLD, 22);
 
-        campoValorBruto = new JTextField("0");
+        campoValorBruto = new JTextField(""); // Inicia o campo vazio
         campoValorBruto.setFont(fonteDisplay);
         campoValorBruto.setHorizontalAlignment(JTextField.RIGHT);
         campoValorBruto.setBorder(null);
@@ -88,20 +82,17 @@ public class JanelaCalculadora extends JFrame {
         labelValorCSLL = new JLabel("R$ 0,00");
         labelValorCSLL.setFont(fonteResultadoValor);
         labelValorCSLL.setHorizontalAlignment(SwingConstants.RIGHT);
-        
+
         labelAviso = new JLabel(" ");
         labelAviso.setHorizontalAlignment(SwingConstants.CENTER);
 
         gbc.gridwidth = 2; gbc.gridx = 0; gbc.gridy = 0; painelPrincipal.add(campoValorBruto, gbc);
         gbc.gridwidth = 1;
-
         gbc.gridx = 0; gbc.gridy = 1;
         JLabel labelTipoEntidade = new JLabel("Tipo de Entidade:");
         labelTipoEntidade.setFont(fontePadrao);
         painelPrincipal.add(labelTipoEntidade, gbc);
-        
         gbc.gridx = 1; gbc.gridy = 1; painelPrincipal.add(seletorTipoOrgao, gbc);
-
         gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
@@ -109,10 +100,8 @@ public class JanelaCalculadora extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.CENTER;
-
         gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2; painelPrincipal.add(new JSeparator(), gbc);
         gbc.gridwidth = 1;
-        
         gbc.gridx = 0; gbc.gridy = 4; painelPrincipal.add(new JLabel("IR Retido:"){ { setFont(fonteResultadoLabel); } }, gbc);
         gbc.gridx = 1; gbc.gridy = 4; painelPrincipal.add(labelValorIR, gbc);
         gbc.gridx = 0; gbc.gridy = 5; painelPrincipal.add(new JLabel("PIS Retido:"){ { setFont(fonteResultadoLabel); } }, gbc);
@@ -121,19 +110,30 @@ public class JanelaCalculadora extends JFrame {
         gbc.gridx = 1; gbc.gridy = 6; painelPrincipal.add(labelValorCOFINS, gbc);
         gbc.gridx = 0; gbc.gridy = 7; painelPrincipal.add(new JLabel("CSLL Retido:"){ { setFont(fonteResultadoLabel); } }, gbc);
         gbc.gridx = 1; gbc.gridy = 7; painelPrincipal.add(labelValorCSLL, gbc);
-        
         gbc.gridx = 0; gbc.gridy = 8;
         JLabel labelLiquidoTitulo = new JLabel("Valor Líquido:");
         labelLiquidoTitulo.setFont(new Font("Arial", Font.BOLD, 18));
         painelPrincipal.add(labelLiquidoTitulo, gbc);
-        
         gbc.gridx = 1; gbc.gridy = 8; painelPrincipal.add(labelValorLiquido, gbc);
-        
         gbc.gridx = 0; gbc.gridy = 9; gbc.gridwidth = 2; painelPrincipal.add(labelAviso, gbc);
 
         this.add(painelPrincipal);
-        botaoLimpar.addActionListener(e -> campoValorBruto.setText("0"));
+        
+        // Ação de limpar agora funciona porque limparCampos() está definido abaixo
+        botaoLimpar.addActionListener(e -> limparCampos());
         configurarAtalhos(painelPrincipal);
+    }
+    
+    // **MÉTODO MOVIDO PARA CIMA**
+    private void limparCampos() {
+        campoValorBruto.setText("");
+        labelValorLiquido.setText("R$ 0,00");
+        labelValorIR.setText("R$ 0,00");
+        labelValorPIS.setText("R$ 0,00");
+        labelValorCOFINS.setText("R$ 0,00");
+        labelValorCSLL.setText("R$ 0,00");
+        labelAviso.setText(" ");
+        campoValorBruto.requestFocusInWindow();
     }
 
     private void configurarAtalhos(JPanel painel) {
@@ -152,16 +152,17 @@ public class JanelaCalculadora extends JFrame {
         actionMap.put("limparAction", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                campoValorBruto.setText("0");
+                limparCampos(); // Agora funciona!
             }
         });
     }
 
     private void executarCalculo() {
         try {
-            String valorTexto = campoValorBruto.getText();
-            if (valorTexto.isEmpty() || valorTexto.equals("0")) {
-                return; 
+            String valorTexto = campoValorBruto.getText().trim();
+            if (valorTexto.isEmpty()) {
+                limparCampos();
+                return;
             }
             NumberFormat format = NumberFormat.getNumberInstance(Locale.of("pt", "BR"));
             double valorBruto = format.parse(valorTexto).doubleValue();
@@ -176,6 +177,7 @@ public class JanelaCalculadora extends JFrame {
             JOptionPane.showMessageDialog(this,
                     "O valor inserido não é um número válido.",
                     "Erro de Entrada", JOptionPane.ERROR_MESSAGE);
+            limparCampos();
         }
     }
 
