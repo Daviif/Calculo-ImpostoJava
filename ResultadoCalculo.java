@@ -1,33 +1,57 @@
 // Arquivo: ResultadoCalculo.java
 
 public class ResultadoCalculo {
+    private double valorOriginal;
+    private double valorLiquido;
+    private double valorIR;
+    private double valorPIS;
+    private double valorCOFINS;
+    private double valorCSLL;
+    private boolean dispensaTotal; // Este campo armazena se a retenção total foi dispensada
+    private boolean dispensaIR;    // Este campo armazena se a retenção de IR foi dispensada
 
-    private final double valorBruto;
-    private final double valorLiquido;
-    private final double valorIR;
-    private final double valorPIS;
-    private final double valorCOFINS;
-    private final double valorCSLL;
-    private final boolean dispensaRetencaoTotal;
-    private final boolean dispensaRetencaoIR;
-
-    public ResultadoCalculo(double valorBruto, double valorLiquido, double valorIR, double valorPIS, double valorCOFINS, double valorCSLL, boolean dispensaTotal, boolean dispensaIR) {
-        this.valorBruto = valorBruto;
+    public ResultadoCalculo(double valorOriginal, double valorLiquido, double valorIR, double valorPIS, double valorCOFINS, double valorCSLL, boolean dispensaTotal, boolean dispensaIR) {
+        this.valorOriginal = valorOriginal;
         this.valorLiquido = valorLiquido;
         this.valorIR = valorIR;
         this.valorPIS = valorPIS;
         this.valorCOFINS = valorCOFINS;
         this.valorCSLL = valorCSLL;
-        this.dispensaRetencaoTotal = dispensaTotal;
-        this.dispensaRetencaoIR = dispensaIR;
+        this.dispensaTotal = dispensaTotal;
+        this.dispensaIR = dispensaIR;
     }
 
-    public double getValorBruto() { return valorBruto; }
-    public double getValorLiquido() { return valorLiquido; }
-    public double getValorIR() { return valorIR; }
-    public double getValorPIS() { return valorPIS; }
-    public double getValorCOFINS() { return valorCOFINS; }
-    public double getValorCSLL() { return valorCSLL; }
-    public boolean isDispensaRetencaoTotal() { return dispensaRetencaoTotal; }
-    public boolean isDispensaRetencaoIR() { return dispensaRetencaoIR; }
+    // Getters para acessar os valores
+    public double getValorOriginal() {
+        return valorOriginal;
+    }
+
+    public double getValorLiquido() {
+        return valorLiquido;
+    }
+
+    public double getValorIR() {
+        return valorIR;
+    }
+
+    public double getValorPIS() {
+        return valorPIS;
+    }
+
+    public double getValorCOFINS() {
+        return valorCOFINS;
+    }
+
+    public double getValorCSLL() {
+        return valorCSLL;
+    }
+
+    // Novos métodos públicos para verificar as flags de dispensa
+    public boolean isDispensaTotal() {
+        return dispensaTotal;
+    }
+
+    public boolean isDispensaIR() {
+        return dispensaIR;
+    }
 }
